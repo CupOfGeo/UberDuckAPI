@@ -36,7 +36,7 @@ class UberDuck():
             print("POLLING")
         else:
             print('Unsuccessful request')
-            return -1
+            return None
 
         try:
             uuid = response.json()['uuid']
@@ -44,7 +44,7 @@ class UberDuck():
             if response.json()['detail']:
                 print('ERROR')
                 print(response.json()['detail'])
-                return -1
+                return None
 
         def test(response):
             print(response.json())
@@ -61,6 +61,6 @@ class UberDuck():
                               step=1,
                               check_success=test)
         print('GOT RESULT')
-        #self.last_result = result
+        # self.last_result = result
         out = requests.get(result.json()["path"])
         return out.content

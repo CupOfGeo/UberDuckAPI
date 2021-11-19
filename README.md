@@ -1,1 +1,1 @@
-#Python wrapper for the UberDuck API
+# Python wrapper for the UberDuck API
