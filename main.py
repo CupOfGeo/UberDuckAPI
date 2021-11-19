@@ -1,11 +1,23 @@
-import os
 import requests
 import polling
 import json
 from pydub import AudioSegment
 from pydub.playback import play
 from tempfile import NamedTemporaryFile
-from requests.auth import HTTPBasicAuth
+
+
+def play_voice(raw_sound_bytes):
+    with NamedTemporaryFile(delete=False) as f:
+        f.write(raw_sound_bytes)
+        # for playing wav file
+        song = AudioSegment.from_wav(f.name)
+        print('playing sound using pydub')
+        play(song)
+
+
+def download_result(raw_sound_bytes, file_name):
+    with open(file_name, 'wb+') as output_file:
+        output_file.write(raw_sound_bytes)
 
 
 class UberDuck():
@@ -52,15 +64,3 @@ class UberDuck():
         #self.last_result = result
         out = requests.get(result.json()["path"])
         return out.content
-
-    def play_voice(self, raw_sound_bytes):
-        with NamedTemporaryFile(delete=False) as f:
-            f.write(raw_sound_bytes)
-            # for playing wav file
-            song = AudioSegment.from_wav(f.name)
-            print('playing sound using pydub')
-            play(song)
-
-    def download_result(self, raw_sound_bytes, file_name):
-        with open(file_name, 'wb+') as output_file:
-            output_file.write(raw_sound_bytes)
