@@ -1,18 +1,29 @@
 import requests
 import polling
 import json
-from pydub import AudioSegment
-from pydub.playback import play
+# from pydub import AudioSegment
+# from pydub.playback import play
 from tempfile import NamedTemporaryFile
 
+"""
+pyexample.
 
-def play_voice(raw_sound_bytes):
-    with NamedTemporaryFile(delete=False) as f:
-        f.write(raw_sound_bytes)
-        # for playing wav file
-        song = AudioSegment.from_wav(f.name)
-        print('playing sound using pydub')
-        play(song)
+An example python library.
+"""
+
+__version__ = "0.1.0"
+__author__ = 'CupOfGeo'
+__credits__ = 'https://uberduck.ai/'
+
+
+
+# def play_voice(raw_sound_bytes):
+#     with NamedTemporaryFile(delete=True) as f:
+#         f.write(raw_sound_bytes)
+#         # for playing wav file
+#         song = AudioSegment.from_wav(f.name)
+#         print('playing sound using pydub')
+#         play(song)
 
 
 def download_result(raw_sound_bytes, file_name):
