@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
     name='uberduckapi',
-    version='0.1.6',
+    version='0.0.9',
     description='python wrapper for uberduck api',
     packages=["uberduckapi"],
     url='https://uberduck.ai/',
