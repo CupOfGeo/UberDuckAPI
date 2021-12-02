@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "uberduckapi"
-version = "0.1.2"
+version = "0.1.18"
 description = "Python wrapper for uberduck API"
 readme = "README.md"
 homepage = "https://github.com/CupOfGeo/uberduckapi"
@@ -9,9 +9,10 @@ authors = ["George <mazzeogeorge@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 polling = "^0.3.2"
 requests = "^2.26.0"
+pydub = "^0.25.0"
 
 [tool.poetry.dev-dependencies]
 
@@ -22,4 +23,6 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.urls]
 "Uberduck" = "https://uberduck.ai"
 
-#poetry publish -r testpypi
+# poetry build
+# poetry publish -r testpypi
+# pip install -i https://test.pypi.org/pypi/ --extra-index-url https://pypi.org/simple uberduckapi==0.1.16

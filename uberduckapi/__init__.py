@@ -1,34 +1,23 @@
+import io
+
 import requests
 import polling
 import json
-# from pydub import AudioSegment
-# from pydub.playback import play
-from tempfile import NamedTemporaryFile
+from pydub import AudioSegment
+from pydub.playback import play
+import time
+import os
 
 """
-pyexample.
+UberDuckAPI 
 
-An example python library.
+
 """
+#
+# __version__ = "0.1.4"
+# __author__ = 'CupOfGeo'
+# __credits__ = 'https://uberduck.ai/'
 
-__version__ = "0.1.0"
-__author__ = 'CupOfGeo'
-__credits__ = 'https://uberduck.ai/'
-
-
-
-# def play_voice(raw_sound_bytes):
-#     with NamedTemporaryFile(delete=True) as f:
-#         f.write(raw_sound_bytes)
-#         # for playing wav file
-#         song = AudioSegment.from_wav(f.name)
-#         print('playing sound using pydub')
-#         play(song)
-
-
-def download_result(raw_sound_bytes, file_name):
-    with open(file_name, 'wb+') as output_file:
-        output_file.write(raw_sound_bytes)
 
 
 class UberDuck():
@@ -37,6 +26,12 @@ class UberDuck():
         self.secret = secret
 
     def get_voice(self, voice_name, speech):
+        """
+        :param voice_name:
+        :param speech:
+        :return: The uuid of the audio
+        """
+        vc = VoiceClip(voice_name, speech)
         data = {"speech": speech, "voice": voice_name}
         data_json = json.dumps(data)
         # Making a get request
@@ -47,6 +42,8 @@ class UberDuck():
             print("POLLING")
         else:
             print('Unsuccessful request')
+            print(response)
+            print(response.json())
             return None
 
         try:
@@ -58,7 +55,7 @@ class UberDuck():
                 return None
 
         def test(response):
-            print(response.json())
+            # print(response.json())
             if response.json()['path'] == 'null' or response.json()['path'] is None:
                 return False
             else:
@@ -73,5 +70,51 @@ class UberDuck():
                               check_success=test)
         print('GOT RESULT')
         # self.last_result = result
-        out = requests.get(result.json()["path"])
-        return out.content
+
+        uuid = result.json()["path"]
+        vc.uuid = uuid
+
+        out = requests.get(uuid)
+        vc.sound_byte_array = out.content
+        return vc
+
+
+class VoiceClip():
+    def __init__(self, voice, text):
+        self.voice = voice
+        self.text = text
+        self.sound_byte_array = []
+        self.uuid = ''
+
+    def play_voice(self):
+        """
+        plays wav file with pydub
+        :return:
+        """
+        if not self.sound_byte_array:
+            return 'EMPTY AUDIO DATA'
+
+        voice = io.BytesIO(self.sound_byte_array)
+        # I hope they dont have a file with the exact current time up to 6 decimal places *gulp*
+        voice.name = f'{time.time()}.wav'
+        with open(voice.name, "wb") as f:
+            f.write(voice.getbuffer())
+        try:
+            song = AudioSegment.from_wav(voice.name)
+            play(song)
+            os.remove(voice.name)
+        except Exception as e:
+            return f'FAILED TO PLAY {e}'
+
+    def save(self, file_name):
+        """
+        saves to file
+        :param file_name:
+        :return:
+        """
+        with open(file_name, 'wb+') as output_file:
+            output_file.write(self.sound_byte_array)
+
+
+
+
