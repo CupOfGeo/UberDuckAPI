@@ -1,3 +1,6 @@
+This is a much better and uptodata python wrapper for the uberduck api
+https://github.com/ImNimboss/uberduck
+
 # Python wrapper for the [UberDuck](https://uberduck.ai) API
 This is a python wrapper for the uberduck api. You must have api access to use.
 
